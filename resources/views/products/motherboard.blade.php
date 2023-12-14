@@ -6,61 +6,34 @@
     <header class="main-header">
         <h1>Choose A Motherboard</h1>
     </header>
-    <table>
+    <table class="table">
         <thead>
-            
         <tr>
-            @auth
             <th>Name</th>
-            <th>Socket/CPU</th>
-            <th>Form Factor</th>
-            <th>Memory Max</th>
-            <th>Memory Slots</th>
-            <th>Rating</th>
+            <th>Description</th>
+            <th>Image</th>
             <th>Price</th>
             <th>Action</th>
-                @else
-                <th>Name</th>
-            <th>Socket/CPU</th>
-            <th>Form Factor</th>
-            <th>Memory Max</th>
-            <th>Memory Slots</th>
-            <th>Rating</th>
-            <th>Price</th>
-            {{-- <th>Action</th> --}}
-            @endauth
-            
         </tr>
         </thead>
         <tbody>
-            @auth
-            @for ($i = 1; $i <= 10; $i++)
+        @foreach($motherboards as $motherboard)
             <tr>
-                <td>Motherboard {{ $i }}</td>
-                <td>Socket/CPU {{ $i }}</td>
-                <td>ATX</td>
-                <td>64 GB</td>
-                <td>4</td>
-                <td>4.5</td>
-                <td>$199.99</td>
-                <td><a href="{{ url('products/motherboard/'.$i.'/add') }}" class="button">Add</a></td>
+                <td>{{ $motherboard->product_name }}</td>
+                <td>{{ $motherboard->product_desc }}</td>
+                <td>
+                    <img src="{{ asset('images/' . $motherboard->product_image) }}" alt="{{ $motherboard->product_name }}" style="max-width: 100px; max-height: 100px;">
+                </td>
+                <td>${{ $motherboard->price }}</td>
+                <td>
+                    {{-- Use a form to handle adding items to the cart --}}
+                    <form action="{{ route('cart.addToCart', ['id' => $motherboard->product_id]) }}" method="post">
+                        @csrf
+                        <button type="submit" class="button">Add</button>
+                    </form>
+                </td>
             </tr>
-        @endfor
-                @else
-                @for ($i = 1; $i <= 10; $i++)
-                <tr>
-                    <td>Motherboard {{ $i }}</td>
-                    <td>Socket/CPU {{ $i }}</td>
-                    <td>ATX</td>
-                    <td>64 GB</td>
-                    <td>4</td>
-                    <td>4.5</td>
-                    <td>$199.99</td>
-                    {{-- <td><a href="{{ url('products/motherboard/'.$i.'/add') }}" class="button">Add</a></td> --}}
-                </tr>
-            @endfor
-            @endauth
-       
+        @endforeach
         </tbody>
     </table>
 @endsection

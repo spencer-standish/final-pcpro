@@ -15,6 +15,16 @@ class UserController extends Controller
             return view('userProfile');
         }
 
+    public function update(Request $request){
+        $reg = Registration::find($request->id);
+        $reg->fullName = $request->fullName;
+        $reg->phoneNumber = $request->phoneNumber;
+        $reg->province = $request->province;
+        $reg->update();
+
+        return redirect('/')->with('success','profile updated.');
+    }
+
         public function logout(){
             auth()->logout();
             return redirect('/')->with('success','You have successfully logged out.');
@@ -28,7 +38,7 @@ class UserController extends Controller
                 return view('index');
             }
         }
-    
+
         public function login(Request $request){
             // dd(auth()->user(), auth()->id());
             $incomingFields = $request->validate([
@@ -54,7 +64,7 @@ class UserController extends Controller
             //     return("error");
             // };
 
-        
+
         }
 
 
@@ -67,17 +77,17 @@ class UserController extends Controller
 
 
             $incomingFields = $request->validate([
-                'fullName' => ['required', 'min:3'], 
+                'fullName' => ['required', 'min:3'],
                 'email'  => ['required', 'email', Rule::unique('registrations', 'email')],
                 'password'  => ['required', 'min:3'],
                 'confirmPassword'  => 'required',
                 'phoneNumber' => 'required',
                 'province'  => 'required'
             ]);
-            
 
-            
-            
+
+
+
             $incomingFields['password'] = bcrypt($incomingFields['password']);
             // $incomingFields['confirmPassword']= $incomingFields['password'];
 
@@ -86,7 +96,7 @@ class UserController extends Controller
         }
         else
         return view('forms.registerForm');
-        
+
     }
     public function signup(){
         return view('forms.registerForm');

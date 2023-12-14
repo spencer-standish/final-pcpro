@@ -6,66 +6,34 @@
     <header class="main-header">
         <h1>Choose A Case</h1>
     </header>
-    <table>
+    <table class="table">
         <thead>
         <tr>
-            @auth
             <th>Name</th>
-            <th>Type</th>
-            <th>Color</th>
-            <th>Power Supply</th>
-            <th>Side Panel</th>
-            <th>Volume</th>
-            <th>Drive Bays</th>
-            <th>Rating</th>
+            <th>Description</th>
+            <th>Image</th>
             <th>Price</th>
             <th>Action</th>
-            @else
-            <th>Name</th>
-            <th>Type</th>
-            <th>Color</th>
-            <th>Power Supply</th>
-            <th>Side Panel</th>
-            <th>Volume</th>
-            <th>Drive Bays</th>
-            <th>Rating</th>
-            <th>Price</th>
-            {{-- <th>Action</th> --}}
-            @endauth
         </tr>
         </thead>
         <tbody>
-            @auth
-            @for ($i = 1; $i <= 10; $i++)
+        @foreach($case as $product)
             <tr>
-                <td>Corsair 4000D Airflow</td>
-                <td>ATX Mid Tower</td>
-                <td>Black</td>
-                <td>None</td>
-                <td>Tinted Tempered Glass</td>
-                <td>48.6 L</td>
-                <td>2</td>
-                <td>3.5</td>
-                <td>$104.99</td>
-                <td><a href="{{ url('products/case/'.$i.'/add') }}" class="button">Add</a></td>
+                <td>{{ $product->product_name }}</td>
+                <td>{{ $product->product_desc }}</td>
+                <td>
+                    <img src="{{ asset('images/' . $product->product_image) }}" alt="{{ $product->product_name }}" style="max-width: 100px; max-height: 100px;">
+                </td>
+                <td>${{ $product->price }}</td>
+                <td>
+                    <form action="{{ route('cart.addToCart', ['id' => $product->product_id]) }}" method="post">
+                        @csrf
+                        <button type="submit" class="button">Add</button>
+                    </form>
+                </td>
             </tr>
-        @endfor
-            @else
-        @for ($i = 1; $i <= 10; $i++)
-            <tr>
-                <td>Corsair 4000D Airflow</td>
-                <td>ATX Mid Tower</td>
-                <td>Black</td>
-                <td>None</td>
-                <td>Tinted Tempered Glass</td>
-                <td>48.6 L</td>
-                <td>2</td>
-                <td>3.5</td>
-                <td>$104.99</td>
-                {{-- <td><a href="{{ url('products/case/'.$i.'/add') }}" class="button">Add</a></td> --}}
-            </tr>
-        @endfor
-        @endauth
+        @endforeach
         </tbody>
     </table>
 @endsection
+

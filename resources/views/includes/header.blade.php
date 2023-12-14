@@ -19,6 +19,7 @@
         <!-- Add your user action buttons here -->
         @auth
         <a href="{{url('/userProfile')}}" class=" user-button">Hello, {{auth()->user()->fullName}}</a>
+        <a href="{{ url('/cart') }}" class="user-button">Cart</a>
         <a href="{{ url('/checkout') }}" class="user-button">Checkout</a>
         {{-- <form action="/logout"></form> --}}
         <a href="{{ url('/logout') }}" class="user-button">Log Out</a>
@@ -27,7 +28,7 @@
         <a href="{{ url('/login') }}" class="user-button">Login</a>
         <a href="{{ url('#') }}" class="user-button">Admin Login</a>
         @endauth
-        
-       
+
+
     </div>
 </div>

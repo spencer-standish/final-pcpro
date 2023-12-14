@@ -6,66 +6,33 @@
     <header class="main-header">
         <h1>Choose A CPU</h1>
     </header>
-    <table>
+    <table class="table">
         <thead>
-            @auth
-            <tr>
-                <th>Name</th>
-                <th>Core Count</th>
-                <th>Performance Core Clock</th>
-                <th>Performance Boost Clock</th>
-                <th>TDP</th>
-                <th>Integrated Graphics</th>
-                <th>Rating</th>
-                <th>Price</th>
-                <th>Action</th>
-            </tr>
-            @else
-            <tr>
-                <th>Name</th>
-                <th>Core Count</th>
-                <th>Performance Core Clock</th>
-                <th>Performance Boost Clock</th>
-                <th>TDP</th>
-                <th>Integrated Graphics</th>
-                <th>Rating</th>
-                <th>Price</th>
-                {{-- <th>Action</th> --}}
-            </tr>
-            @endauth
-       
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
         </thead>
         <tbody>
-            @auth
-            @for ($i = 1; $i <= 10; $i++)
+        @foreach($cpus as $product)
             <tr>
-                <td>AMD A10-6700</td>
-                <td>4</td>
-                <td>3.7 GHz</td>
-                <td>4.2 GHz</td>
-                <td>65 W</td>
-                <td>Radeon HD 8670D</td>
-                <td>0</td>
-                <td>$83.22</td>
-                <td><a href="{{ url('products/cpu/'.$i.'/add') }}" class="button">Add</a></td>
+                <td>{{ $product->product_name }}</td>
+                <td>{{ $product->product_desc }}</td>
+                <td>
+                    <img src="{{ asset('images/' . $product->product_image) }}" alt="{{ $product->product_name }}" style="max-width: 100px; max-height: 100px;">                </td>
+                <td>${{ $product->price }}</td>
+                <td>
+                    {{-- Use a form to handle adding items to the cart --}}
+                    <form action="{{ route('cart.addToCart', ['id' => $product->product_id]) }}" method="post">
+                    @csrf
+                        <button type="submit" class="button">Add</button>
+                    </form>
+                </td>
             </tr>
-        @endfor
-                @else
-                @for ($i = 1; $i <= 10; $i++)
-                <tr>
-                    <td>AMD A10-6700</td>
-                    <td>4</td>
-                    <td>3.7 GHz</td>
-                    <td>4.2 GHz</td>
-                    <td>65 W</td>
-                    <td>Radeon HD 8670D</td>
-                    <td>0</td>
-                    <td>$83.22</td>
-                    {{-- <td><a href="{{ url('products/cpu/'.$i.'/add') }}" class="button">Add</a></td> --}}
-                </tr>
-            @endfor
-            @endauth
-       
+        @endforeach
         </tbody>
     </table>
 @endsection
